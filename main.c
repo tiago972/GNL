@@ -3,14 +3,25 @@
 int		main()
 {
 	char 	*line;
-	int		i = -1;
+	int		out;
+	int		p[2];
+	char 	*str;
+	int		gnl_ret;
 
-	int fd = open("test", O_RDWR);
-	while (++i < 6)
-	{
-		get_next_line(fd, &line);
-		printf("%s\n", line);
-	}
-	close(fd);
+	str = (char *)malloc(1000 * 1000);
+	*str = '\0';
+	strcat(str, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur in leo dignissim, gravida leo id, imperdiet urna. Aliquam magna nunc, maximus quis eleifend et, scelerisque non dolor. Suspendisse augue augue, tempus");
+	strcat(str, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur in leo dignissim, gravida leo id, imperdiet urna. Aliquam magna nunc, maximus quis eleifend et, scelerisque non dolor. Suspendisse augue augue, tempus");
+	strcat(str, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur in leo dignissim, gravida leo id, imperdiet urna. Aliquam magna nunc, maximus quis eleifend et, scelerisque non dolor. Suspendisse augue augue, tempus");
+	out = dup(1);
+	pipe(p);
+	dup2(p[1], 1);
+
+	write(1, str, strlen(str));
+	close(p[1]);
+	dup2(out, 1);
+	gnl_ret = get_next_line(p[0], &line);
+	//printf("res = %s", line);
+	free(line);
 	return (0);
 }

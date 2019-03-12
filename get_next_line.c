@@ -45,7 +45,7 @@ static int		ft_read(const int fd, char **res)
 	}
 	return (ret);
 }
-/*
+
 static int		ft_countlines(char *s)
 {
 	int		count;
@@ -57,7 +57,7 @@ static int		ft_countlines(char *s)
 		if (*cpy == '\n')
 			count++;
 	return (count);
-}*/
+}
 
 int				get_next_line(const int fd, char **line)
 {
@@ -65,24 +65,26 @@ int				get_next_line(const int fd, char **line)
 	int			ret;
 	int			err;
 	int			count;
+	static int	n_call = 0;
 
 	err = -1;
 	count = -1;
 	if (fd == -1 || !line)
 		return (-1);
+	n_call++;
 	if (!res)
 		if (!(res = ft_strnew(BUFF_SIZE)))
 			return (0);
 	ret = ft_read(fd, &res);
 	if (ret >= 0)
 		err = ft_get_line(n_call, res, line);
-	//if (ret == 0)
-	//	count = ft_countlines(res);
+	if (ret == 0)
+		count = ft_countlines(res);
 	//if (count == n_call)
 		//free(res);
-	if (ret > 0 && err == 1)
+	if (err == 1 && count < n_call)
 		return (1);
-	else if (ret == 0 && err == 1)
+	else if (count == n_call && err == 1)
 		return(0);
 	return (-1);
 }
