@@ -3,14 +3,12 @@
 int		main()
 {
 	char 	*line;
-	int		i = -1;
+	int		res;
 
 	int fd = open("test", O_RDWR);
-	while (++i < 6)
-	{
-		get_next_line(fd, &line);
+	while ((res = get_next_line(fd, &line)) > 0)
 		printf("%s\n", line);
-	}
+	free(line);
 	close(fd);
 	return (0);
 }
