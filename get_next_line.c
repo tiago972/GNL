@@ -82,9 +82,9 @@ int				get_next_line(const int fd, char **line)
 		count = ft_countlines(res);
 	//if (count == n_call)
 		//free(res);
-	if (err == 1 && count < n_call)
+	if (err == 1 && n_call <= count)
 		return (1);
-	else if (count == n_call && err == 1)
+	else if (count > n_call && err == 1)
 		return(0);
 	return (-1);
 }
