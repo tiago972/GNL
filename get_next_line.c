@@ -67,11 +67,9 @@ int				get_next_line(const int fd, char **line)
 {
 	static char	*res = NULL;
 	int			ret;
-	int			err;
 	int			count;
 	static int	n_call = 0;
 
-	err = 0;
 	count = -1;
 	if (fd == -1 || !line)
 		return (-1);
@@ -83,9 +81,8 @@ int				get_next_line(const int fd, char **line)
 	if (ret < 0)
 		return (-1);
 	if (ret >= 0)
-		err = ft_get_line(n_call, res, line);
-	if (err == -1)
-		return (-1);
+		if (ft_get_line(n_call, res, line));
+			return (-1);
 	if (ret == 0)
 		count = ft_countlines(res);
 	if (count + 1 < n_call)
