@@ -58,6 +58,8 @@ static int		ft_countlines(char *s)
 	while (*cpy++)
 		if (*cpy == '\n')
 			count++;
+	if (*(cpy - 1) != '\n')
+		count++;
 	return (count);
 }
 
