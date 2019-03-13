@@ -78,6 +78,7 @@ int				get_next_line(const int fd, char **line)
 		if (!(res = ft_strnew(BUFF_SIZE)))
 			return (-1);
 	ret = ft_read(fd, &res);
+	printf("---- %s -----", res);
 	if (ret < 0)
 		return (-1);
 	if (ft_get_line(n_call, res, line) == -1)
@@ -85,8 +86,8 @@ int				get_next_line(const int fd, char **line)
 	count = ft_countlines(res);
 	if (count < n_call)
 	{
-		//ft_strclr(*line);
-		//free(res);
+		ft_strclr(*line);
+		ft_strdel(&res);
 		return(0);
 	}
 	return (1);
