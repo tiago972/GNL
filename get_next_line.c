@@ -1,33 +1,56 @@
 #include "get_next_line.h"
+/*
+   static size_t	ft_newstrlen(char *s)
+   {
+   char	*cpy;
 
-static size_t	ft_newstrlen(char *s)
+   cpy = s;
+   while (*cpy && *cpy != '\n')
+   cpy++;
+   return (cpy - s);
+   }
+
+static void		ft_trim(char *s)
 {
-	char	*cpy;
+	char *cpy;
 
 	cpy = s;
-	while (*cpy && *cpy != '\n')
-		cpy++;
-	return (cpy - s);
-}
-
-static int		ft_get_line(int n_call, char *res, char **line)
-{
-	char	*cpy;
-	int		count;
-
-	cpy = res;
-	count = 0;
-	while (count < n_call - 1 && *cpy)
+	while (*cpy)
 	{
 		if (*cpy == '\n')
-			count++;
-		cpy++;
+			*cpy = '\0';
+		cpy++;	
 	}
-	if (!(*line = ft_strnew(ft_newstrlen(cpy))))
-		return (-1);
-	*line = ft_memcpy(*line, cpy,ft_newstrlen(cpy));
-	if (*line)
-		return (1);
+}*/
+static int		ft_get_line(char **res, char **line)
+{
+	char	*tmp;
+	size_t	n;
+
+	while (**res)
+	{
+		tmp = ft_strchr(*res, '\n');
+		if (tmp != NULL)
+			n = tmp - *res;
+		else
+			n = 0;
+		if (n > 0)
+		{
+			if (!(*line = ft_strnew(n)))
+				return (-1);
+			*line = ft_memmove(*line, *res, n);
+			ft_strcpy(*res, *res + n + 1);
+		}
+		else if (n == 0)
+		{
+			if (!(*line = ft_strnew(ft_strlen(*res))))
+				return (-1);
+			*line = ft_strcpy(*line, *res);
+			ft_strcpy(*res, "\0");
+		}
+		if (*line)
+			return (1);
+	}
 	return (-1);
 }
 
@@ -47,46 +70,43 @@ static int		ft_read(const int fd, char **res)
 	}
 	return (ret);
 }
+/*
+   static int		ft_countlines(char *s)
+   {
+   int		count;
+   char	*cpy;
 
-static int		ft_countlines(char *s)
-{
-	int		count;
-	char	*cpy;
-
-	cpy = s;
-	count = 0;
-	while (*cpy++)
-		if (*cpy == '\n')
-			count++;
-	if (*(cpy - 2) != '\n')
-		count++;
-	return (count);
-}
-
+   cpy = s;
+   count = 0;
+   while (*cpy++)
+   if (*cpy == '\n')
+   count++;
+   if (*(cpy - 2) != '\n')
+   count++;
+   return (count);
+   }
+   */
 int				get_next_line(const int fd, char **line)
 {
 	static char	*res = NULL;
 	int			ret;
-	int			count;
-	static int	n_call = 0;
+	static char	**tmp = NULL;
 
-	count = -1;
 	if (fd == -1 || !line)
 		return (-1);
-	n_call++;
 	if (!res)
+	{
 		if (!(res = ft_strnew(BUFF_SIZE)))
 			return (-1);
-	ret = ft_read(fd, &res);
-	printf("---- %s -----", res);
+		tmp = &res;
+	}
+	ret = ft_read(fd, tmp);
 	if (ret < 0)
 		return (-1);
-	if (ft_get_line(n_call, res, line) == -1)
+	if (ft_get_line(tmp, line) == -1)
 		return (-1);
-	count = ft_countlines(res);
-	if (count < n_call)
-	{
-		ft_strclr(*line);
+	if (*res == '\0')
+	{	
 		ft_strdel(&res);
 		return(0);
 	}
