@@ -4,6 +4,8 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdio.h>
+# include <fcntl.h>
+
 void				ft_putchar(char	c);
 void				ft_putstr(const char *str);
 char				*ft_strdup(char *str);
