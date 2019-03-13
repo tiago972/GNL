@@ -4,6 +4,7 @@ static int		ft_get_line(char **res, char **line)
 {
 	char	*tmp;
 	size_t	n;
+	int		i = 0;
 
 	if (**res)
 	{
@@ -17,13 +18,15 @@ static int		ft_get_line(char **res, char **line)
 			if (!(*line = ft_strnew(n)))
 				return (-1);
 			*line = ft_memmove(*line, *res, n);
-			ft_strcpy(*res, *res + n + 1);
+			ft_strcpy(*res, *res + n + 1);	
 		}
 		else if (n == 0)
 		{
 			if (!(*line = ft_strnew(ft_strlen(*res))))
 				return (-1);
-			*line = ft_strcpy(*line, *res);
+			while(*res[i] == '\n')
+				i++;
+			*line = ft_strcpy(*line, *res + i);
 			ft_strcpy(*res, "\0");
 		}
 		return (*line ? 1 : 0);

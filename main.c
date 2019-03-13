@@ -6,6 +6,14 @@ int		main()
 	int		res;
 
 	int fd = open("test", O_RDWR);
+	res = get_next_line(fd, &line);
+	printf("'%s', res = %d\n", line, res);
+	res = get_next_line(fd, &line);
+	printf("'%s', res = %d\n", line, res);
+	res = get_next_line(fd, &line);
+	printf("'%s', res = %d\n", line, res);
+	res = get_next_line(fd, &line);
+	printf("'%s', res = %d\n", line, res);
 	/*int i = -1;
 	  while (++i < 2)
 	  {
@@ -14,7 +22,7 @@ int		main()
 		free(line);
 		line = malloc(1);
 	  }
-	  free(line);*/
+	  free(line);
 	while ((res = get_next_line(fd, &line)) > 0)
 	{
 		printf("%s, %d\n", line, res);
@@ -34,6 +42,6 @@ int		main()
 	}
 	printf("%s, %d\n", line2, res);
 	free(line2);
-	close(fd2);
+	close(fd2);*/
 	return (0);
 }
