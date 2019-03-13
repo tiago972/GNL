@@ -79,7 +79,7 @@ int				get_next_line(const int fd, char **line)
 	if (ft_get_line(n_call, res, line) == -1)
 		return (-1);
 	count = ft_countlines(res);
-	if (count + 1 <= n_call)
+	if (count + 1 < n_call)
 	{
 		//ft_strclr(*line);
 		//free(res);
