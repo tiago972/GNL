@@ -25,8 +25,8 @@ static int		ft_get_line(int n_call, char *res, char **line)
 	}
 	if (!(*line = ft_strnew(ft_newstrlen(cpy))))
 		return (-1);
-	ft_memcpy(*line, cpy,ft_newstrlen(cpy));
-	if (*line[0] != '\0')
+	*line = ft_memcpy(*line, cpy,ft_newstrlen(cpy));
+	if (*line)
 		return (1);
 	return (-1);
 }
@@ -58,7 +58,7 @@ static int		ft_countlines(char *s)
 	while (*cpy++)
 		if (*cpy == '\n')
 			count++;
-	if (*(cpy - 1) != '\n')
+	if (*(cpy - 2) != '\n')
 		count++;
 	return (count);
 }
@@ -83,7 +83,7 @@ int				get_next_line(const int fd, char **line)
 	if (ft_get_line(n_call, res, line) == -1)
 		return (-1);
 	count = ft_countlines(res);
-	if (count + 1 < n_call)
+	if (count < n_call)
 	{
 		//ft_strclr(*line);
 		//free(res);
