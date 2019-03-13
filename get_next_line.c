@@ -1,33 +1,11 @@
 #include "get_next_line.h"
-/*
-   static size_t	ft_newstrlen(char *s)
-   {
-   char	*cpy;
 
-   cpy = s;
-   while (*cpy && *cpy != '\n')
-   cpy++;
-   return (cpy - s);
-   }
-
-static void		ft_trim(char *s)
-{
-	char *cpy;
-
-	cpy = s;
-	while (*cpy)
-	{
-		if (*cpy == '\n')
-			*cpy = '\0';
-		cpy++;	
-	}
-}*/
 static int		ft_get_line(char **res, char **line)
 {
 	char	*tmp;
 	size_t	n;
 
-	while (**res)
+	if (**res)
 	{
 		tmp = ft_strchr(*res, '\n');
 		if (tmp != NULL)
@@ -48,10 +26,9 @@ static int		ft_get_line(char **res, char **line)
 			*line = ft_strcpy(*line, *res);
 			ft_strcpy(*res, "\0");
 		}
-		if (*line)
-			return (1);
+		return (*line ? 1 : 0);
 	}
-	return (-1);
+	return (-2);
 }
 
 static int		ft_read(const int fd, char **res)
@@ -70,22 +47,7 @@ static int		ft_read(const int fd, char **res)
 	}
 	return (ret);
 }
-/*
-   static int		ft_countlines(char *s)
-   {
-   int		count;
-   char	*cpy;
 
-   cpy = s;
-   count = 0;
-   while (*cpy++)
-   if (*cpy == '\n')
-   count++;
-   if (*(cpy - 2) != '\n')
-   count++;
-   return (count);
-   }
-   */
 int				get_next_line(const int fd, char **line)
 {
 	static char	*res = NULL;
@@ -103,12 +65,11 @@ int				get_next_line(const int fd, char **line)
 	ret = ft_read(fd, tmp);
 	if (ret < 0)
 		return (-1);
-	if (ft_get_line(tmp, line) == -1)
+	if ((ret = ft_get_line(tmp, line) == -2))
+		return (0);
+	else if (ret == -1)
 		return (-1);
 	if (*res == '\0')
-	{	
 		ft_strdel(&res);
-		return(0);
-	}
 	return (1);
 }
