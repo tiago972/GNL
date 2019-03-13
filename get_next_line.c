@@ -26,7 +26,9 @@ static int		ft_get_line(int n_call, char *res, char **line)
 	if (!(*line = ft_strnew(ft_newstrlen(cpy))))
 		return (-1);
 	ft_memcpy(*line, cpy,ft_newstrlen(cpy));
-	return (1);
+	if (*line[0] != '\0')
+		return (1);
+	return (-1);
 }
 
 static int		ft_read(const int fd, char **res)
