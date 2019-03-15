@@ -3,37 +3,44 @@
 #include "sys/stat.h"
 int		main()
 {
-	char *line;
+	char 	*line;
 	int		out;
 	int		p[2];
 	int		fd;
 	int		gnl_ret;
 
-	fd = 1;
-	out = dup(fd);
+	out = dup(1);
 	pipe(p);
 
-	dup2(p[1], fd);
-	write(fd, "aaa\nbbb\nccc\nddd\n", 16);
-	dup2(out, fd);
-	close(p[1]);
-	get_next_line(p[0], &line);
-	//mt_assert(strcmp(line, "aaa") == 0);
-	get_next_line(p[0], &line);
-	//mt_assert(strcmp(line, "bbb") == 0);
-	get_next_line(p[0], &line);
-	//mt_assert(strcmp(line, "ccc") == 0);
-	get_next_line(p[0], &line);
-	//mt_assert(strcmp(line, "ddd") == 0);
 	fd = 1;
-	out = dup(fd);
-	pipe(p);
 	dup2(p[1], fd);
-	write(fd, "aaa", 3);
+	write(fd, "abc\n\n", 5);
 	close(p[1]);
 	dup2(out, fd);
+
+	/* Read abc and new line */
 	gnl_ret = get_next_line(p[0], &line);
-//	mt_assert(strcmp(line, "aaa") == 0);
-//	mt_assert(gnl_ret == 0 || gnl_ret == 1);
+	//mt_assert(gnl_ret == 1);
+	//mt_assert(strcmp(line, "abc") == 0);
+	printf("LINE = %s, res = %d, attend = %d\n", line, gnl_ret, 1);
+	ft_strdel(&line);
+	/* Read new line */
+	gnl_ret = get_next_line(p[0], &line);
+	//mt_assert(gnl_ret == 1);
+	//mt_assert(line == NULL || *line == '\0');
+	printf("LINE = %s, res = %d, attendu = %d\n", line, gnl_ret, 1);
+	ft_strdel(&line);
+	/* Read again, but meet EOF */
+	gnl_ret = get_next_line(p[0], &line);
+	//mt_assert(gnl_ret == 0);
+	//mt_assert(line == NULL || *line == '\0');
+	printf("LINE = %s, res = %d, attendu = %d\n", line, gnl_ret, 0);
+	ft_strdel(&line);
+	/* Let's do it once again */
+	gnl_ret = get_next_line(p[0], &line);
+//	mt_assert(gnl_ret == 0);
+//	mt_assert(line == NULL || *line == '\0');
+	printf("LINE = %s, res = %d, attentu = %d\n", line, gnl_ret, 0);
+	ft_strdel(&line);
 	return (0);
 }

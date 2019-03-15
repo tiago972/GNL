@@ -37,7 +37,7 @@ static int		ft_line_joker(char *str, int op)
 	}
 	if (op == 1)
 		return (i);
-	if (str[i - 1] != '\n')
+	if (i > 0 && str[i - 1] != '\n')
 		count++;
 	return (count);
 }
@@ -107,7 +107,6 @@ int				get_next_line(const int fd, char **line)
 	if (current->nb_call > 1)
 		current->index = current->index + current->line_size + 1;
 	current->line_size = ft_line_joker(current->buff + current->index, 1);
-//	printf("CURRENT: fd %d, nb_l %d , index, %d, line_size %d, nb_call %d\n", current->fd, current->nb_l, current->index, current->line_size, current->nb_call);
 	*line = ft_strsub(current->buff, current->index, current->line_size);
 	if (current->nb_call <= current->nb_l)
 		return (1);
