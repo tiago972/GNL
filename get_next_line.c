@@ -94,8 +94,8 @@ int				get_next_line(const int fd, char **line)
 	if (fd < 0 || !line)
 		return (-1);
 	current = ft_initialize(&begin_list, fd);
-	if (deb >= 3)
-		printf("CURRENT lines %d, nb_call %d, index %d, line_size %d, BUFF \n%s\n", current->nb_l, current->nb_call , current->index, current->line_size, current->buff);
+//	if (deb >= 3)
+//		printf("CURRENT lines %d, nb_call %d, index %d, line_size %d, BUFF \n%s\n", current->nb_l, current->nb_call , current->index, current->line_size, current->buff);
 	deb++;
 	if (current->ret == -1)
 		return (-1);
