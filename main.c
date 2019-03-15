@@ -11,7 +11,7 @@ int		main()
     if(fstat(fd, &stat1) < 0) return -1;
 	while ((res = get_next_line(fd, &line)) > 0)
 	{
-		//printf("%s, %d\n", line, res);
+		printf("%s, %d\n", line, res);
 		ft_strdel(&line);
 	}
 	//res = get_next_line(fd, &line);
