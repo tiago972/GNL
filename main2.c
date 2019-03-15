@@ -12,6 +12,22 @@ int		main()
 	fd = 1;
 	out = dup(fd);
 	pipe(p);
+
+	dup2(p[1], fd);
+	write(fd, "aaa\nbbb\nccc\nddd\n", 16);
+	dup2(out, fd);
+	close(p[1]);
+	get_next_line(p[0], &line);
+	//mt_assert(strcmp(line, "aaa") == 0);
+	get_next_line(p[0], &line);
+	//mt_assert(strcmp(line, "bbb") == 0);
+	get_next_line(p[0], &line);
+	//mt_assert(strcmp(line, "ccc") == 0);
+	get_next_line(p[0], &line);
+	//mt_assert(strcmp(line, "ddd") == 0);
+	fd = 1;
+	out = dup(fd);
+	pipe(p);
 	dup2(p[1], fd);
 	write(fd, "aaa", 3);
 	close(p[1]);

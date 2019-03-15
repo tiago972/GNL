@@ -43,7 +43,7 @@ static int		ft_line_joker(char *str, int op)
 static t_gnl	*ft_initialize(t_list **begin_list, int fd)
 {
 	t_list	*tmp;
-	t_gnl	new;
+	t_gnl	*new;
 
 	tmp = *begin_list;
 	while (tmp)
@@ -52,12 +52,14 @@ static t_gnl	*ft_initialize(t_list **begin_list, int fd)
 			return ((t_gnl *)tmp->content);
 		tmp = tmp->next;
 	}
-	ft_memset(&new, 0, sizeof(new));
-	new.fd = fd;
-	new.buff = ft_strnew(BUFF_SIZE);
-	new.buff = ft_readfile(fd, new.buff, &(new.ret));
-	new.nb_l = ft_line_joker(new.buff, 0);
-	tmp = ft_lstnew(&new, sizeof(new));
+	if (!(new = (t_gnl*)malloc(sizeof(t_gnl))))
+		return (NULL);
+	ft_memset(new, 0, sizeof(t_gnl));
+	new->fd = fd;
+	new->buff = ft_strnew(BUFF_SIZE);
+	new->buff = ft_readfile(fd, new->buff, &(new->ret));
+	new->nb_l = ft_line_joker(new->buff, 0);
+	tmp = ft_lstnew(new, sizeof(t_gnl));
 	ft_lstadd(begin_list, tmp);
 	return ((t_gnl *)(tmp->content));
 }
@@ -93,6 +95,8 @@ int				get_next_line(const int fd, char **line)
 	if (fd < 0 || !line)
 		return (-1);
 	current = ft_initialize(&begin_list, fd);
+	if (!current)
+		return (-1);
 	if (current->ret == -1)
 	{
 		ft_del(&begin_list, fd);
