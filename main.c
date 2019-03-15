@@ -15,7 +15,7 @@ int		main()
 	//res = get_next_line(fd, &line);
 	//printf("%s, %d\n", line, res);
 	//ft_strdel(&line);	
-	close(fd);
+	//close(fd);
 	char *line2; 
 	int fd2 = open("test2", O_RDWR);
 	while ((res = get_next_line(fd2, &line2)) > 0)
@@ -27,6 +27,6 @@ int		main()
 	//printf("%s, %d\n", line, res);
 	ft_strdel(&line);
 	close(fd2);
-	//close(fd);
+	close(fd);
 	return (0);
 }
