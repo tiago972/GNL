@@ -37,13 +37,15 @@ static int		ft_line_joker(char *str, int op)
 	}
 	if (op == 1)
 		return (i);
+	if (str[i - 1] != '\n')
+		count++;
 	return (count);
 }
 
 static t_gnl	*ft_initialize(t_list **begin_list, int fd)
 {
 	t_list	*tmp;
-	t_gnl	*new;
+	t_gnl	new;
 
 	tmp = *begin_list;
 	while (tmp)
@@ -52,14 +54,12 @@ static t_gnl	*ft_initialize(t_list **begin_list, int fd)
 			return ((t_gnl *)tmp->content);
 		tmp = tmp->next;
 	}
-	if (!(new = (t_gnl*)malloc(sizeof(t_gnl))))
-		return (NULL);
-	ft_memset(new, 0, sizeof(t_gnl));
-	new->fd = fd;
-	new->buff = ft_strnew(BUFF_SIZE);
-	new->buff = ft_readfile(fd, new->buff, &(new->ret));
-	new->nb_l = ft_line_joker(new->buff, 0);
-	tmp = ft_lstnew(new, sizeof(t_gnl));
+	ft_memset(&new, 0, sizeof(t_gnl));
+	new.fd = fd;
+	new.buff = ft_strnew(BUFF_SIZE);
+	new.buff = ft_readfile(fd, new.buff, &(new.ret));
+	new.nb_l = ft_line_joker(new.buff, 0);
+	tmp = ft_lstnew(&new, sizeof(t_gnl));
 	ft_lstadd(begin_list, tmp);
 	return ((t_gnl *)(tmp->content));
 }
@@ -107,13 +107,10 @@ int				get_next_line(const int fd, char **line)
 	if (current->nb_call > 1)
 		current->index = current->index + current->line_size + 1;
 	current->line_size = ft_line_joker(current->buff + current->index, 1);
+//	printf("CURRENT: fd %d, nb_l %d , index, %d, line_size %d, nb_call %d\n", current->fd, current->nb_l, current->index, current->line_size, current->nb_call);
 	*line = ft_strsub(current->buff, current->index, current->line_size);
 	if (current->nb_call <= current->nb_l)
-	{
-		if (current->nb_call == current->nb_l)
-			ft_del(&begin_list, fd);
 		return (1);
-	}
 	ft_del(&begin_list, fd);
 	ft_strdel(line);
 	return (0);

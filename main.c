@@ -15,8 +15,10 @@ int		main(int ac, char **av)
 	{
 		fd = open(av[i], O_RDONLY);
 		while ((res = get_next_line(fd, &line)) > 0)
+		{
 			printf("res = %d, line = %s\n", res, line);
-		ft_strdel(&line);
+			ft_strdel(&line);		
+		}
 		i++;
 	}
 	return (0);
