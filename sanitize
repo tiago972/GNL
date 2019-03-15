@@ -1,1 +1,0 @@
-gcc -ggdb main.c get_next_line.c -fsanitize=address -fno-omit-frame-pointer -L./libft -lft
