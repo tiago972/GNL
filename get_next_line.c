@@ -11,7 +11,7 @@ static	char	*ft_readfile(int fd, char *buff, int *ret)
 		tmp[*ret] = '\0';
 		tmp2 = ft_strjoin(buff, tmp);
 		ft_strdel(&buff);
-		buff = strdup(tmp2);
+		buff = ft_strdup(tmp2);
 		ft_strdel(&tmp2);
 	}
 	ft_strdel(&tmp);
