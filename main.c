@@ -14,10 +14,10 @@ int		main()
 		//printf("%s, %d\n", line, res);
 		ft_strdel(&line);
 	}
-	res = get_next_line(fd, &line);
-	printf("%s, %d\n", line, res);
+	//res = get_next_line(fd, &line);
+	//printf("%s, %d\n", line, res);
 	//ft_strdel(&line);	
-	//close(fd);
+	close(fd);
 	char *line2; 
 	int fd2 = open("test2", O_RDWR);
 	if(fstat(fd2, &stat2) < 0) return -1;
@@ -32,6 +32,6 @@ int		main()
 	//printf("%s, %d\n", line, res);
 	ft_strdel(&line);
 	close(fd2);
-	close(fd);
+	//close(fd);
 	return (0);
 }

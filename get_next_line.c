@@ -9,6 +9,7 @@ static	char	*ft_readfile(int fd, char *buff, int *ret)
 	while ((*ret = read(fd, tmp, BUFF_SIZE)) > 0)
 	{
 		tmp[*ret] = '\0';
+		printf("READ\n");
 		tmp2 = ft_strjoin(buff, tmp);
 		ft_strdel(&buff);
 		buff = strdup(tmp2);
@@ -52,13 +53,16 @@ static t_gnl	*ft_initialize(t_list **begin_list, int fd)
 			return ((t_gnl *)tmp->content);
 		tmp = tmp->next;
 	}
+	//printf("New before FD %d lines %d, nb_call %d, index %d, line_size %d, BUFF %s\n", new.fd, new.nb_l, new.nb_call , new.index, new.line_size, new.buff);
 	ft_memset(&new, 0, sizeof(new));
+	//printf("New after ini à 0 FD %d lines %d, nb_call %d, index %d, line_size %d, BUFF %s\n", new.fd, new.nb_l, new.nb_call , new.index, new.line_size, new.buff);
 	new.fd = fd;
 	new.buff = ft_strnew(BUFF_SIZE);
 	new.buff = ft_readfile(fd, new.buff, &(new.ret));
 	new.nb_l = ft_line_joker(new.buff, 0);
 	tmp = ft_lstnew(&new, sizeof(new));
 	ft_lstadd(begin_list, tmp);
+	//printf("New after ini fin FD %d lines %d, nb_call %d, index %d, line_size %d, BUFF %s\n", new.fd, new.nb_l, new.nb_call , new.index, new.line_size, new.buff);
 	return ((t_gnl *)(tmp->content));
 }
 
@@ -89,14 +93,14 @@ int				get_next_line(const int fd, char **line)
 {
 	static t_list	*begin_list = NULL;
 	t_gnl			*current;
-	static int		deb = 0;
+	static int		debug = 0;
 
 	if (fd < 0 || !line)
 		return (-1);
 	current = ft_initialize(&begin_list, fd);
 //	if (deb >= 3)
 //		printf("CURRENT lines %d, nb_call %d, index %d, line_size %d, BUFF \n%s\n", current->nb_l, current->nb_call , current->index, current->line_size, current->buff);
-	deb++;
+	debug++;
 	if (current->ret == -1)
 		return (-1);
 	current->nb_call++;
