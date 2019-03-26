@@ -1,23 +1,5 @@
 #include "get_next_line.h"
 
-static	char	*ft_readfile(int fd, char *buff, int *ret)
-{
-	char	*tmp;
-	char	*tmp2;
-
-	tmp = ft_strnew(BUFF_SIZE);
-	while ((*ret = read(fd, tmp, BUFF_SIZE)) > 0)
-	{
-		tmp[*ret] = '\0';
-		tmp2 = ft_strjoin(buff, tmp);
-		ft_strdel(&buff);
-		buff = ft_strdup(tmp2);
-		ft_strdel(&tmp2);
-	}
-	ft_strdel(&tmp);
-	return (buff);
-}
-
 static int		ft_line_joker(char *str, int op)
 {
 	int		i;
@@ -32,14 +14,38 @@ static int		ft_line_joker(char *str, int op)
 			count++;
 			if (op == 1)
 				return (i);
+			if (op == 3)
+				return (1);
 		}
 		i++;
 	}
+	if (op == 3)
+		return (0);
 	if (op == 1)
 		return (i);
 	if (i > 0 && str[i - 1] != '\n')
 		count++;
 	return (count);
+}
+
+static	char	*ft_readfile(int fd, t_gnl *ptr)
+{
+	char	*tmp;
+	char	*tmp2;
+
+	tmp = ft_strnew(BUFF_SIZE);
+	while ((ptr->ret = read(fd, tmp, BUFF_SIZE)) > 0)
+	{
+		tmp[ptr->ret] = '\0';
+		tmp2 = ft_strjoin(ptr->buff, tmp);
+		ft_strdel(&(ptr->buff));
+		ptr->buff = ft_strdup(tmp2);
+		ft_strdel(&tmp2);
+		if (ft_line_joker((ptr->buff + ptr->index), 3))
+			break ;
+	}
+	ft_strdel(&tmp);
+	return (ptr->buff);
 }
 
 static t_gnl	*ft_initialize(t_list **begin_list, int fd)
@@ -57,8 +63,7 @@ static t_gnl	*ft_initialize(t_list **begin_list, int fd)
 	ft_memset(&new, 0, sizeof(t_gnl));
 	new.fd = fd;
 	new.buff = ft_strnew(BUFF_SIZE);
-	new.buff = ft_readfile(fd, new.buff, &(new.ret));
-	new.nb_l = ft_line_joker(new.buff, 0);
+	new.buff = ft_readfile(fd, &new);
 	tmp = ft_lstnew(&new, sizeof(t_gnl));
 	ft_lstadd(begin_list, tmp);
 	return ((t_gnl *)(tmp->content));
@@ -105,10 +110,15 @@ int				get_next_line(const int fd, char **line)
 	}
 	current->nb_call++;
 	if (current->nb_call > 1)
+	{
 		current->index = current->index + current->line_size + 1;
+		current->buff = ft_readfile(current->fd, current);
+	}
 	current->line_size = ft_line_joker(current->buff + current->index, 1);
 	*line = ft_strsub(current->buff, current->index, current->line_size);
-	if (current->nb_call <= current->nb_l)
+	if (current->ret == 0)
+		current->nb_l = ft_line_joker(current->buff, 0);
+	if (current->ret > 0 || current->nb_call <= current->nb_l)
 		return (1);
 	ft_del(&begin_list, fd);
 	ft_strdel(line);
