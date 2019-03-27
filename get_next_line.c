@@ -30,10 +30,9 @@ static int		ft_line_joker(char *str, int op)
 
 static	char	*ft_readfile(int fd, t_gnl *ptr)
 {
-	char	*tmp;
+	char	tmp[BUFF_SIZE + 1];
 	char	*tmp2;
 
-	tmp = ft_strnew(BUFF_SIZE);
 	while ((ptr->ret = read(fd, tmp, BUFF_SIZE)) > 0)
 	{
 		tmp[ptr->ret] = '\0';
@@ -44,7 +43,6 @@ static	char	*ft_readfile(int fd, t_gnl *ptr)
 		if (ft_line_joker((ptr->buff + ptr->index), 3))
 			break ;
 	}
-	ft_strdel(&tmp);
 	return (ptr->buff);
 }
 
