@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: edbaudou <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/01 17:07:47 by edbaudou          #+#    #+#             */
+/*   Updated: 2019/04/01 17:16:07 by edbaudou         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 
 static int		ft_line_joker(char *str, int op)
@@ -30,9 +42,10 @@ static int		ft_line_joker(char *str, int op)
 
 static	char	*ft_readfile(int fd, t_gnl *ptr)
 {
-	char	tmp[BUFF_SIZE + 1];
+	char	tmp;
 	char	*tmp2;
 
+	tmp = ft_strnew(BUFF_SIZE);
 	while ((ptr->ret = read(fd, tmp, BUFF_SIZE)) > 0)
 	{
 		tmp[ptr->ret] = '\0';
@@ -43,6 +56,7 @@ static	char	*ft_readfile(int fd, t_gnl *ptr)
 		if (ft_line_joker((ptr->buff + ptr->index), 3))
 			break ;
 	}
+	ft_strdel(&tmp);
 	return (ptr->buff);
 }
 
@@ -67,10 +81,10 @@ static t_gnl	*ft_initialize(t_list **begin_list, int fd)
 	return ((t_gnl *)(tmp->content));
 }
 
-static	void	ft_del(t_list **begin_list, int fd)
+static	int		ft_del(t_list **begin_list, int fd, int opt)
 {
-	t_list *tmp;
-	t_gnl 	*del;
+	t_list	*tmp;
+	t_gnl	*del;
 	t_list	*tmp2;
 
 	tmp2 = *begin_list;
@@ -88,6 +102,7 @@ static	void	ft_del(t_list **begin_list, int fd)
 	ft_memdel(&del);
 	ft_memdel(&tmp2);
 	*begin_list = tmp;
+	return (opt == -1 ? -1 : 0);
 }
 
 int				get_next_line(const int fd, char **line)
@@ -98,13 +113,10 @@ int				get_next_line(const int fd, char **line)
 	if (fd < 0 || !line)
 		return (-1);
 	current = ft_initialize(&begin_list, fd);
-	if (!current)
-		return (-1);
-	if (current->ret == -1)
+	if (!current || current->ret == -1)
 	{
-		ft_del(&begin_list, fd);
 		ft_strdel(line);
-		return (-1);
+		return (ft_del(&begin_list, fd, -1));
 	}
 	current->nb_call++;
 	if (current->nb_call > 1)
@@ -118,7 +130,6 @@ int				get_next_line(const int fd, char **line)
 		current->nb_l = ft_line_joker(current->buff, 0);
 	if (current->ret > 0 || current->nb_call <= current->nb_l)
 		return (1);
-	ft_del(&begin_list, fd);
 	ft_strdel(line);
-	return (0);
+	return (ft_del(&begin_list, fd, 0));
 }

@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: edbaudou <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/01 13:50:40 by edbaudou          #+#    #+#             */
+/*   Updated: 2019/04/01 14:16:06 by edbaudou         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/libft.h"
 
-char	*ft_strjoin(char const *s1,char const *s2)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*res;
 	char	*cpys1;

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strtrim.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: edbaudou <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/01 13:52:25 by edbaudou          #+#    #+#             */
+/*   Updated: 2019/04/01 14:17:38 by edbaudou         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/libft.h"
 
 static int		ft_checkchar(char c)
@@ -44,7 +56,7 @@ char			*ft_strtrim(char const *s)
 	cpys = (char*)s;
 	end = ft_strlen((char*)s) - end;
 	while (*(cpys + beg))
-	{	
+	{
 		if (beg == end)
 			break ;
 		*cpyres++ = *(cpys + beg);

@@ -1,9 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   libft.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: edbaudou <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/01 14:26:40 by edbaudou          #+#    #+#             */
+/*   Updated: 2019/04/01 16:14:46 by edbaudou         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef LIBFT_H
 # define LIBFT_H
 
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdio.h>
+
 void				ft_putchar(char	c);
 void				ft_putstr(const char *str);
 char				*ft_strdup(char *str);
@@ -25,7 +38,8 @@ char				*ft_strncat(char *dest, char *src, size_t n);
 char				*ft_strchr(const char *s, int c);
 char				*ft_strrchr(const char *s, int c);
 char				*ft_strstr(const char *haystack, const char *needle);
-char				*ft_strnstr(const char *haystack, const char *needle, size_t n);
+char				*ft_strnstr(const char *haystack, const char *needle,
+					size_t n);
 int					ft_strncmp(char *s1, char *s2, size_t n);
 int					ft_isalpha(int c);
 int					ft_isdigit(int c);
@@ -41,13 +55,13 @@ char				*ft_strnew(size_t size);
 void				ft_strdel(char **as);
 void				ft_strclr(char *s);
 void				ft_striter(char *s, void (*f)(char*));
-void				ft_striteri(char *s,void (*f)(unsigned int, char *));
+void				ft_striteri(char *s, void (*f)(unsigned int, char *));
 char				*ft_strmap(char	*s, char (*f)(char));
-char				*ft_strmapi(char *s,char (*f)(unsigned int, char));
+char				*ft_strmapi(char *s, char (*f)(unsigned int, char));
 int					ft_strequ(char const *s1, char const *s2);
 int					ft_strnequ(char const *s1, char const *s2, size_t n);
 char				*ft_strsub(char const *s, unsigned int start, size_t len);
-char				*ft_strjoin(char const *s1,char const *s2);
+char				*ft_strjoin(char const *s1, char const *s2);
 char				*ft_strtrim(char const *s);
 char				**ft_strsplit(const char *s1, char sep);
 void				ft_print_words_tables(char **s);
@@ -70,5 +84,7 @@ void				ft_lstadd(t_list **alst, t_list *new_elem);
 void				ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 void				*ft_realloc(void *ptr, size_t new_size);
+void				ft_putchar_err(const char c);
+void				ft_putstr_err(const char *s);
 
 #endif
