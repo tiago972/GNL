@@ -118,18 +118,19 @@ int				get_next_line(const int fd, char **line)
 		ft_strdel(line);
 		return (ft_del(&begin_list, fd, -1));
 	}
-	current->nb_call++;
-	if (current->nb_call > 1)
+	if (++(current->nb_call) > 1)
 	{
 		current->index = current->index + current->line_size + 1;
 		current->buff = ft_readfile(current->fd, current);
 	}
-	current->line_size = ft_line_joker(current->buff + current->index, 1);
-	*line = ft_strsub(current->buff, current->index, current->line_size);
+	if (((int)ft_strlen(current->buff)) > current->index)
+	{
+		current->line_size = ft_line_joker(current->buff + current->index, 1);
+		*line = ft_strsub(current->buff, current->index, current->line_size);
+	}
 	if (current->ret == 0)
 		current->nb_l = ft_line_joker(current->buff, 0);
 	if (current->ret > 0 || current->nb_call <= current->nb_l)
 		return (1);
-	ft_strdel(line);
 	return (ft_del(&begin_list, fd, 0));
 }
