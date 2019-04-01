@@ -6,7 +6,7 @@
 /*   By: edbaudou <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/01 17:07:47 by edbaudou          #+#    #+#             */
-/*   Updated: 2019/04/01 17:16:07 by edbaudou         ###   ########.fr       */
+/*   Updated: 2019/04/01 17:21:25 by edbaudou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static int		ft_line_joker(char *str, int op)
 
 static	char	*ft_readfile(int fd, t_gnl *ptr)
 {
-	char	tmp;
+	char	*tmp;
 	char	*tmp2;
 
 	tmp = ft_strnew(BUFF_SIZE);
@@ -96,7 +96,7 @@ static	int		ft_del(t_list **begin_list, int fd, int opt)
 		tmp2 = tmp2->next;
 	}
 	if (!tmp2)
-		return ;
+		return (0);
 	tmp = tmp2->next;
 	ft_strdel(&(del->buff));
 	ft_memdel(&del);
